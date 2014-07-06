@@ -1,0 +1,14 @@
+extends layout
+block content
+  h1
+    a(href=link)!= title
+  hr
+  h2 #{price}$
+  hr
+  a(href="https://www.google.ca/maps/@#{lat},#{lng},11z?hl=fr")
+    span(style="font-size:45px").glyphicon.glyphicon-map-marker
+  hr
+  p!= description
+  for image in images
+    img(src=image).img-responsive.img-rounded
+    br
