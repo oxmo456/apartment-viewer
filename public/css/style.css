@@ -1,0 +1,11 @@
+.vertical-align-middle {
+    display: inline-block;
+    vertical-align: middle;
+    float: none;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+a:visited h2 {
+    color: #f0ad4e;
+}

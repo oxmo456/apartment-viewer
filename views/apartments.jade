@@ -1,0 +1,8 @@
+extends ./layout
+block content
+  table.table.table-striped
+    for apartment in apartments
+      tr
+        td
+          a(href="/apartment/#{apartment.sha1}")
+            h2=apartment.title

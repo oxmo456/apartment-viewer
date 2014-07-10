@@ -1,60 +1,45 @@
-var express = require('express');
-var path = require('path');
-var favicon = require('static-favicon');
-var logger = require('morgan');
-var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
+const express = require('express');
+const request = require('request');
 
-var routes = require('./routes/index');
-var apartment = require('./routes/apartment');
+const FANA_SERVER = process.env.FANA_SERVER || "http://localhost:8080/";
+const SERVER_PORT = Number(process.env.PORT || 3000);
 
-var app = express();
+const publicDirectory = __dirname + '/public';
 
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
+const app = express();
+
+app.use(express.static(publicDirectory));
+app.set('views', __dirname + '/views');
 app.set('view engine', 'jade');
 
-app.use(favicon());
-app.use(logger('dev'));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded());
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
-
-app.use('/', routes);
-app.use('/apartment/:id', apartment);
-
-/// catch 404 and forward to error handler
-app.use(function (req, res, next) {
-    var err = new Error('Not Found');
-    err.status = 404;
-    next(err);
+app.get('/', function (req, res) {
+    res.render('index', {});
 });
 
-/// error handlers
+app.get('/apartment/:id', function (req, res) {
+    const apartmentId = req.params.id;
 
-// development error handler
-// will print stacktrace
-if (app.get('env') === 'development') {
-    app.use(function (err, req, res, next) {
-        res.status(err.status || 500);
-        res.render('error', {
-            message: err.message,
-            error: err
-        });
-    });
-}
+    request(FANA_SERVER + 'apartment/' + apartmentId, function (error, response, body) {
+        if (!error && response.statusCode == 200) {
+            console.log(body);
+            res.render('apartment', JSON.parse(body));
+        } else {
+            res.render('error', {message: 'Oops'});
+        }
+    })
+});
 
-// production error handler
-// no stacktraces leaked to user
-app.use(function (err, req, res, next) {
-    res.status(err.status || 500);
-    res.render('error', {
-        message: err.message,
-        error: {}
-    });
+app.get('/apartments', function (req, res) {
+
+    request(FANA_SERVER + 'apartments', function (error, response, body) {
+        if (!error && response.statusCode == 200) {
+            res.render('apartments', JSON.parse(body));
+        } else {
+            res.render('error', {message: 'Oops'});
+        }
+    })
 });
 
 
-module.exports = app;
-
+app.listen(SERVER_PORT, function () {
+});
