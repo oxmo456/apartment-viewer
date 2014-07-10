@@ -6,7 +6,7 @@
     margin-bottom: 0;
 }
 
-a:visited,
-a:visited h2{
+.apartments a:visited,
+.apartments a:visited h2{
     color: #f0ad4e;
 }
