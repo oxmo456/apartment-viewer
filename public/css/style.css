@@ -6,6 +6,7 @@
     margin-bottom: 0;
 }
 
-a:visited h2 {
+a:visited,
+a:visited h2{
     color: #f0ad4e;
 }
