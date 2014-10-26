@@ -31,7 +31,7 @@ app.get('/apartment/:id', function (req, res) {
 
 app.get('/apartments', function (req, res) {
 
-    request(FANA_SERVER + 'apartments', function (error, response, body) {
+    request(FANA_SERVER + 'apartments?sort-by=newest-first', function (error, response, body) {
         if (!error && response.statusCode == 200) {
             res.render('apartments', JSON.parse(body));
         } else {
