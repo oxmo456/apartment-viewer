@@ -8,6 +8,10 @@ const publicDirectory = __dirname + '/public';
 
 const app = express();
 
+function createGoogleMapLinkFromAddress(address) {
+    return 'https://www.google.ca/maps?q=' + encodeURIComponent(address.replace(/\s/, '+'));
+}
+
 app.use(express.static(publicDirectory));
 app.set('views', __dirname + '/views');
 app.set('view engine', 'jade');
@@ -22,7 +26,9 @@ app.get('/apartment/:id', function (req, res) {
     request(FANA_SERVER + 'apartment/' + apartmentId, function (error, response, body) {
         if (!error && response.statusCode == 200) {
             console.log(body);
-            res.render('apartment', JSON.parse(body));
+            var data = JSON.parse(body);
+            data.googleMapLink = createGoogleMapLinkFromAddress(data.address);
+            res.render('apartment', data);
         } else {
             res.render('error', {message: 'Oops'});
         }
