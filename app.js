@@ -9,7 +9,7 @@ const publicDirectory = __dirname + '/public';
 const app = express();
 
 function createGoogleMapLinkFromAddress(address) {
-    return 'https://www.google.ca/maps?q=' + encodeURIComponent(address.replace(/\s/, '+'));
+    return 'https://www.google.ca/maps/place/' + address.replace(/\s/, '+');
 }
 
 app.use(express.static(publicDirectory));
